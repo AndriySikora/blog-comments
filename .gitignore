@@ -1,0 +1,6 @@
+.idea
+node_modules
+yarn.lock
+src/*.bundle.js
+src/*.map
+src/**/**/*.js
