@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import CommentsData from '../firebase-connection';
 
 class Comment extends Component {
     render() {
