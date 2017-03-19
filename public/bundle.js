@@ -10368,10 +10368,10 @@ var CommentsSection = function (_Component) {
                     var item = commentsItem.val();
                     item['.key'] = commentsItem.key;
                     commentItem.push(item);
+                });
 
-                    _this2.setState({
-                        commentItem: _this2.orderByDate(commentItem)
-                    });
+                _this2.setState({
+                    commentItem: commentItem
                 });
             });
         }
@@ -10379,13 +10379,6 @@ var CommentsSection = function (_Component) {
         key: 'componentWillUnMount',
         value: function componentWillUnMount() {
             this.firebaseRef.off();
-        }
-    }, {
-        key: 'orderByDate',
-        value: function orderByDate(list) {
-            return list.sort(function (a, b) {
-                return new Date(a.date).getTime() - new Date(b.date).getTime();
-            });
         }
     }, {
         key: 'onChangeName',
@@ -10450,10 +10443,10 @@ var CommentsSection = function (_Component) {
                     _react2.default.createElement(
                         'button',
                         { className: 'btn btn-success' },
-                        'Add comments ' + (this.state.commentItem.length + 1)
+                        'Add comments ' + this.state.commentItem.length
                     )
                 ),
-                _react2.default.createElement(_NewListComments2.default, { commentItem: this.orderByDate(this.state.commentItem) })
+                _react2.default.createElement(_NewListComments2.default, { commentItem: this.state.commentItem })
             );
         }
     }]);
@@ -10605,9 +10598,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var NewListComments = function (_React$Component) {
     (0, _inherits3.default)(NewListComments, _React$Component);
 
-    function NewListComments() {
+    function NewListComments(props) {
         (0, _classCallCheck3.default)(this, NewListComments);
-        return (0, _possibleConstructorReturn3.default)(this, (NewListComments.__proto__ || (0, _getPrototypeOf2.default)(NewListComments)).apply(this, arguments));
+
+        var _this = (0, _possibleConstructorReturn3.default)(this, (NewListComments.__proto__ || (0, _getPrototypeOf2.default)(NewListComments)).call(this, props));
+
+        _this.state = {
+            commentsOrder: 'asc'
+        };
+
+        _this.orderByDate = _this.orderByDate.bind(_this);
+        _this.getSortedItems = _this.getSortedItems.bind(_this);
+        return _this;
     }
 
     (0, _createClass3.default)(NewListComments, [{
@@ -10617,9 +10619,30 @@ var NewListComments = function (_React$Component) {
             firebaseRef.child(key).update();
         }
     }, {
+        key: 'orderByDate',
+        value: function orderByDate(listOrder) {
+            this.setState({ commentsOrder: listOrder.target.value });
+        }
+    }, {
+        key: 'getSortedItems',
+        value: function getSortedItems() {
+
+            if (this.state.commentsOrder === 'asc') {
+                return this.props.commentItem.sort(function (a, b) {
+                    return new Date(a.date).getTime() - new Date(b.date).getTime();
+                });
+            } else {
+                return this.props.commentItem.reverse(function (a, b) {
+                    return new Date(a.date).getTime() - new Date(b.date).getTime();
+                });
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var commentsItem = this.props.commentItem.map(function (item) {
+            var sortedComments = this.getSortedItems();
+
+            var commentsItem = sortedComments.map(function (item) {
                 return _react2.default.createElement(_CommentsItem2.default, {
                     key: item['.key'],
                     id: item['.key'],
@@ -10636,6 +10659,24 @@ var NewListComments = function (_React$Component) {
                     'div',
                     { className: 'title' },
                     'New comments'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'select',
+                        { value: this.state.commentsOrder, onChange: this.orderByDate },
+                        _react2.default.createElement(
+                            'option',
+                            { value: 'acs' },
+                            'Oldest first'
+                        ),
+                        _react2.default.createElement(
+                            'option',
+                            { value: 'desc' },
+                            'Newest first'
+                        )
+                    )
                 ),
                 _react2.default.createElement(
                     'ul',

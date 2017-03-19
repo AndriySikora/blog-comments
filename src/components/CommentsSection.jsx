@@ -29,11 +29,10 @@ class CommentsSection extends Component {
                 item['.key'] = commentsItem.key;
                 commentItem.push(item);
 
+            });
 
-
-                this.setState({
-                    commentItem: this.orderByDate(commentItem)
-                });
+            this.setState({
+                commentItem: commentItem
             });
         });
     }
@@ -42,11 +41,6 @@ class CommentsSection extends Component {
         this.firebaseRef.off();
     }
 
-    orderByDate(list) {
-        return list.sort((a, b) => {
-            return new Date(a.date).getTime() - new Date(b.date).getTime()
-        });
-    }
 
     onChangeName(e) {
         this.setState({displayName: e.target.value});
@@ -94,9 +88,9 @@ class CommentsSection extends Component {
                         <textarea rows="4" id="message" type="text" className="form-control" placeholder="Type your message..."
                                onChange={this.onChangeMessage} value={this.state.message} />
                     </div>
-                    <button className="btn btn-success">{ 'Add comments ' + (this.state.commentItem.length + 1) }</button>
+                    <button className="btn btn-success">{ 'Add comments ' + (this.state.commentItem.length) }</button>
                 </form>
-                <NewListComments commentItem={this.orderByDate(this.state.commentItem)}/>
+                <NewListComments commentItem={this.state.commentItem}/>
             </div>
         );
     }
