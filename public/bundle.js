@@ -10429,21 +10429,30 @@ var CommentsSection = function (_Component) {
                     _react2.default.createElement(
                         'div',
                         { className: 'form-group' },
-                        _react2.default.createElement('label', { htmlFor: 'displayName' }),
+                        _react2.default.createElement(
+                            'label',
+                            { htmlFor: 'displayName' },
+                            'Your Name'
+                        ),
                         _react2.default.createElement('input', { id: 'displayName', type: 'text', className: 'form-control', placeholder: 'Type your name...',
                             onChange: this.onChangeName, value: this.state.displayName })
                     ),
                     _react2.default.createElement(
                         'div',
                         { className: 'form-group' },
-                        _react2.default.createElement('label', { htmlFor: 'message' }),
-                        _react2.default.createElement('textarea', { rows: '4', id: 'message', type: 'text', className: 'form-control', placeholder: 'Type your message...',
-                            onChange: this.onChangeMessage, value: this.state.message })
+                        _react2.default.createElement(
+                            'label',
+                            { htmlFor: 'message' },
+                            'Comment'
+                        ),
+                        _react2.default.createElement('textarea', { rows: '4', id: 'message', type: 'text', className: 'form-control',
+                            placeholder: 'Type your comment...', onChange: this.onChangeMessage,
+                            value: this.state.message })
                     ),
                     _react2.default.createElement(
                         'button',
-                        { className: 'btn btn-success' },
-                        'Add comments ' + this.state.commentItem.length
+                        { className: 'btn btn-primary' },
+                        'Post comment ' + this.state.commentItem.length
                     )
                 ),
                 _react2.default.createElement(_NewListComments2.default, { commentItem: this.state.commentItem })
@@ -10511,7 +10520,7 @@ var CommentsItem = function (_Component) {
     }
 
     (0, _createClass3.default)(CommentsItem, [{
-        key: 'render',
+        key: "render",
         value: function render() {
             var _props = this.props,
                 id = _props.id,
@@ -10521,23 +10530,24 @@ var CommentsItem = function (_Component) {
 
 
             return _react2.default.createElement(
-                'li',
-                { key: id },
+                "li",
+                { key: id, className: "list-style" },
                 _react2.default.createElement(
-                    'div',
+                    "div",
                     null,
                     displayName
                 ),
                 _react2.default.createElement(
-                    'div',
+                    "div",
                     null,
                     message
                 ),
                 _react2.default.createElement(
-                    'div',
+                    "div",
                     null,
+                    "Date: ",
                     _react2.default.createElement(
-                        'i',
+                        "i",
                         null,
                         date
                     )
@@ -10609,6 +10619,8 @@ var NewListComments = function (_React$Component) {
 
         _this.orderByDate = _this.orderByDate.bind(_this);
         _this.getSortedItems = _this.getSortedItems.bind(_this);
+        _this.getAscendingSort = _this.getAscendingSort.bind(_this);
+        _this.getDescendingSort = _this.getDescendingSort.bind(_this);
         return _this;
     }
 
@@ -10628,14 +10640,24 @@ var NewListComments = function (_React$Component) {
         value: function getSortedItems() {
 
             if (this.state.commentsOrder === 'asc') {
-                return this.props.commentItem.sort(function (a, b) {
-                    return new Date(a.date).getTime() - new Date(b.date).getTime();
-                });
+                return this.getAscendingSort();
             } else {
-                return this.props.commentItem.reverse(function (a, b) {
-                    return new Date(a.date).getTime() - new Date(b.date).getTime();
-                });
+                return this.getDescendingSort();
             }
+        }
+    }, {
+        key: 'getAscendingSort',
+        value: function getAscendingSort() {
+            return this.props.commentItem.sort(function (a, b) {
+                return new Date(a.date).getTime() - new Date(b.date).getTime();
+            });
+        }
+    }, {
+        key: 'getDescendingSort',
+        value: function getDescendingSort() {
+            return this.props.commentItem.reverse(function (a, b) {
+                return new Date(a.date).getTime() - new Date(b.date).getTime();
+            });
         }
     }, {
         key: 'render',
@@ -10658,14 +10680,15 @@ var NewListComments = function (_React$Component) {
                 _react2.default.createElement(
                     'div',
                     { className: 'title' },
-                    'New comments'
+                    'Comments'
                 ),
                 _react2.default.createElement(
                     'div',
-                    null,
+                    { className: 'form-group' },
                     _react2.default.createElement(
                         'select',
-                        { value: this.state.commentsOrder, onChange: this.orderByDate },
+                        { value: this.state.commentsOrder, onChange: this.orderByDate,
+                            className: 'form-control' },
                         _react2.default.createElement(
                             'option',
                             { value: 'acs' },
@@ -10680,7 +10703,7 @@ var NewListComments = function (_React$Component) {
                 ),
                 _react2.default.createElement(
                     'ul',
-                    null,
+                    { className: 'list-unstyled' },
                     commentsItem
                 )
             );

@@ -66,22 +66,22 @@ select {
 }
 
 .title {
-    color: green;
     font-size: 16px;
-}
-
-.title.archive {
-    color: red;
-    font-size: 16px;
+    margin-bottom: 10px;
+    font-weight: 700;
 }
 
 .btn {
     margin: 10px 0 25px;
-    cursor: pointer
+    cursor: pointer;
 }
 
 .comments-form {
-    text-align: right;
+    text-align: left;
+}
+
+.list-style {
+    margin-bottom: 10px;
 }
 
 

@@ -12,6 +12,8 @@ class NewListComments extends React.Component {
 
         this.orderByDate = this.orderByDate.bind(this);
         this.getSortedItems = this.getSortedItems.bind(this);
+        this.getAscendingSort = this.getAscendingSort.bind(this);
+        this.getDescendingSort = this.getDescendingSort.bind(this);
     };
 
     commentsItem(key) {
@@ -23,18 +25,26 @@ class NewListComments extends React.Component {
        this.setState({commentsOrder: listOrder.target.value});
     }
 
+
     getSortedItems() {
 
         if(this.state.commentsOrder === 'asc') {
-                return this.props.commentItem.sort((a, b) => {
-                    return new Date(a.date).getTime() - new Date(b.date).getTime()
-                });
+            return this.getAscendingSort();
         }else{
-            return this.props.commentItem.reverse((a, b) => {
-                return new Date(a.date).getTime() - new Date(b.date).getTime()
-            });
+            return this.getDescendingSort();
         }
+    }
 
+    getAscendingSort() {
+        return this.props.commentItem.sort((a, b) => {
+            return new Date(a.date).getTime() - new Date(b.date).getTime()
+        });
+    }
+
+    getDescendingSort() {
+        return this.props.commentItem.reverse((a, b) => {
+            return new Date(a.date).getTime() - new Date(b.date).getTime()
+        });
     }
 
     render() {
@@ -54,15 +64,16 @@ class NewListComments extends React.Component {
         return(
           <div className="wrapper-list">
               <div className="title">
-                  New comments
+                  Comments
               </div>
-              <div>
-                  <select value={this.state.commentsOrder} onChange={this.orderByDate}>
+              <div className="form-group">
+                  <select value={this.state.commentsOrder} onChange={this.orderByDate}
+                          className="form-control">
                       <option value={'acs'}>Oldest first</option>
                       <option value={'desc'}>Newest first</option>
                   </select>
               </div>
-              <ul>
+              <ul className="list-unstyled">
                   { commentsItem }
               </ul>
           </div>

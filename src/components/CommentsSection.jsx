@@ -79,16 +79,17 @@ class CommentsSection extends Component {
                 <h3>Add new comments to blog</h3>
                 <form className="comments-form" onSubmit={this.handleSubmit}>
                     <div className="form-group">
-                        <label htmlFor="displayName"></label>
+                        <label htmlFor="displayName">Your Name</label>
                         <input id="displayName" type="text" className="form-control" placeholder="Type your name..."
                                onChange={this.onChangeName } value={ this.state.displayName} />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="message"></label>
-                        <textarea rows="4" id="message" type="text" className="form-control" placeholder="Type your message..."
-                               onChange={this.onChangeMessage} value={this.state.message} />
+                        <label htmlFor="message">Comment</label>
+                        <textarea rows="4" id="message" type="text" className="form-control"
+                                  placeholder="Type your comment..." onChange={this.onChangeMessage}
+                                  value={this.state.message} />
                     </div>
-                    <button className="btn btn-success">{ 'Add comments ' + (this.state.commentItem.length) }</button>
+                    <button className="btn btn-primary">{ 'Post comment ' + (this.state.commentItem.length) }</button>
                 </form>
                 <NewListComments commentItem={this.state.commentItem}/>
             </div>

@@ -5,7 +5,7 @@ class CommentsItem extends Component {
         const {id, displayName, date, message} = this.props;
 
         return (
-            <li key={id}>
+            <li key={id} className="list-style">
                 <div>
                     {displayName}
                 </div>
@@ -13,7 +13,7 @@ class CommentsItem extends Component {
                     {message}
                 </div>
                 <div>
-                    <i>{date}</i>
+                   Date: <i>{date}</i>
                 </div>
             </li>
         );
