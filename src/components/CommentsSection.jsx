@@ -15,29 +15,35 @@ class CommentsSection extends Component {
 
         this.onChangeName = this.onChangeName.bind(this);
         this.onChangeMessage = this.onChangeMessage.bind(this);
-        this.setCommentToLocalStorage = this.setCommentToLocalStorage.bind(this);
+        this.setCommentsToLocalStorage = this.setCommentsToLocalStorage.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentWillMount() {
         this.firebaseRef = CommentsData;
+        let itemsFromLocalStorage = JSON.parse(localStorage.getItem('savedComments'));
+
+        const commentItem = [];
+
+        itemsFromLocalStorage.forEach((itemsFromLocalStorage, index) => {
+            let itemStorage = itemsFromLocalStorage;
+            itemStorage['.key'] = index;
+            commentItem.push(itemStorage);
+        });
+
         this.firebaseRef.on('value', (commentsList) => {
-
-            let commentItem = [];
-
             commentsList.forEach((commentsItem) => {
-                const item = commentsItem.val();
+                let item = commentsItem.val();
                 item['.key'] = commentsItem.key;
                 commentItem.push(item);
 
-            });
-
-            console.log(JSON.parse(localStorage.getItem("savedComments")));
-
-            this.setState({
-                commentItem: commentItem
+                this.setState({
+                    commentItem: commentItem
+                });
             });
         });
+
+
     }
 
     componentWillUnMount() {
@@ -60,7 +66,7 @@ class CommentsSection extends Component {
             && this.state.message.trim().length !== 0;
     }
 
-    setCommentToLocalStorage() {
+    setCommentsToLocalStorage() {
 
         let savedComments = JSON.parse(localStorage.getItem('savedComments')) || [];
 
@@ -78,9 +84,9 @@ class CommentsSection extends Component {
     handleSubmit(e) {
         e.preventDefault();
         if (this._isFormDataValid()) {
+            debugger;
+            this.setCommentsToLocalStorage();
 
-            this.setCommentToLocalStorage();
-            
             this.setState({
                 displayName: '',
                 message: ''

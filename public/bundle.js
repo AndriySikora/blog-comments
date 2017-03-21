@@ -10333,7 +10333,7 @@ var CommentsSection = function (_Component) {
 
         _this.onChangeName = _this.onChangeName.bind(_this);
         _this.onChangeMessage = _this.onChangeMessage.bind(_this);
-        _this.setCommentToLocalStorage = _this.setCommentToLocalStorage.bind(_this);
+        _this.setCommentsToLocalStorage = _this.setCommentsToLocalStorage.bind(_this);
         _this.handleSubmit = _this.handleSubmit.bind(_this);
         return _this;
     }
@@ -10344,20 +10344,27 @@ var CommentsSection = function (_Component) {
             var _this2 = this;
 
             this.firebaseRef = _firebaseConnection2.default;
+            var itemsFromLocalStorage = JSON.parse(localStorage.getItem('savedComments'));
+
+            var commentItem = [];
+
+            // itemsFromLocalStorage.forEach((itemsFromLocalStorage, index) => {
+            //     let itemStorage = itemsFromLocalStorage;
+            //     itemStorage['.key'] = index;
+            //     commentItem.push(itemStorage);
+            //     console.log('local', commentItem);
+            // });
+
             this.firebaseRef.on('value', function (commentsList) {
-
-                var commentItem = [];
-
                 commentsList.forEach(function (commentsItem) {
                     var item = commentsItem.val();
                     item['.key'] = commentsItem.key;
                     commentItem.push(item);
-                });
 
-                console.log(JSON.parse(localStorage.getItem("savedComments")));
-
-                _this2.setState({
-                    commentItem: commentItem
+                    console.log('db', commentItem);
+                    _this2.setState({
+                        commentItem: commentItem
+                    });
                 });
             });
         }
@@ -10382,8 +10389,8 @@ var CommentsSection = function (_Component) {
             return this.state.displayName && this.state.displayName.trim().length !== 0 && this.state.message && this.state.message.trim().length !== 0;
         }
     }, {
-        key: 'setCommentToLocalStorage',
-        value: function setCommentToLocalStorage() {
+        key: 'setCommentsToLocalStorage',
+        value: function setCommentsToLocalStorage() {
 
             var savedComments = JSON.parse(localStorage.getItem('savedComments')) || [];
 
@@ -10402,8 +10409,8 @@ var CommentsSection = function (_Component) {
         value: function handleSubmit(e) {
             e.preventDefault();
             if (this._isFormDataValid()) {
-
-                this.setCommentToLocalStorage();
+                debugger;
+                this.setCommentsToLocalStorage();
 
                 this.setState({
                     displayName: '',
@@ -10658,8 +10665,8 @@ var NewListComments = function (_React$Component) {
                     key: item['.key'],
                     id: item['.key'],
                     displayName: item.displayName,
-                    date: item.date,
-                    message: item.message
+                    message: item.message,
+                    date: item.date
                 });
             });
 

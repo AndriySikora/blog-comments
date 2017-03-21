@@ -49,8 +49,8 @@ class NewListComments extends React.Component {
                     key={item['.key']}
                     id={item['.key']}
                     displayName={item.displayName}
-                    date={item.date}
                     message={item.message}
+                    date={item.date}
                 />
             }
         );
