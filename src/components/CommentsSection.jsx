@@ -15,6 +15,7 @@ class CommentsSection extends Component {
 
         this.onChangeName = this.onChangeName.bind(this);
         this.onChangeMessage = this.onChangeMessage.bind(this);
+        this.setCommentToLocalStorage = this.setCommentToLocalStorage.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -30,6 +31,8 @@ class CommentsSection extends Component {
                 commentItem.push(item);
 
             });
+
+            console.log(JSON.parse(localStorage.getItem("savedComments")));
 
             this.setState({
                 commentItem: commentItem
@@ -57,15 +60,27 @@ class CommentsSection extends Component {
             && this.state.message.trim().length !== 0;
     }
 
+    setCommentToLocalStorage() {
+
+        let savedComments = JSON.parse(localStorage.getItem('savedComments')) || [];
+
+        let comment = {
+            displayName: this.state.displayName,
+            message: this.state.message,
+            date: (new Date()).toISOString()
+        };
+
+        savedComments.push(comment);
+
+        localStorage.setItem('savedComments', JSON.stringify(savedComments));
+    }
+
     handleSubmit(e) {
         e.preventDefault();
         if (this._isFormDataValid()) {
-            this.firebaseRef.push({
-                displayName: this.state.displayName,
-                message: this.state.message,
-                date: (new Date()).toISOString()
-            });
 
+            this.setCommentToLocalStorage();
+            
             this.setState({
                 displayName: '',
                 message: ''

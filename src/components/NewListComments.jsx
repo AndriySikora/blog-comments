@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import CommentsData from '../firebase-connection';
 import CommentsItem from  './CommentsItem';
 
 class NewListComments extends React.Component {
@@ -15,11 +14,6 @@ class NewListComments extends React.Component {
         this.getAscendingSort = this.getAscendingSort.bind(this);
         this.getDescendingSort = this.getDescendingSort.bind(this);
     };
-
-    commentsItem(key) {
-        let firebaseRef = CommentsData;
-        firebaseRef.child(key).update();
-    }
 
     orderByDate(listOrder) {
        this.setState({commentsOrder: listOrder.target.value});

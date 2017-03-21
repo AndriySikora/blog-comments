@@ -2,4 +2,4 @@ require('babel-register');
 
 require('./server.babel');
 
-require('./firebase-connection');
+require('./src/firebase-connection');
