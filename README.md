@@ -32,13 +32,7 @@ OR
 yarn install
 ```
 
-4. For single, headless tests use:
-
-```shell
-yarn run test:headless
-```
-
-5. To run code in a browser user:
+4. To run code in a browser user:
 
 ```shell
 yarn start
