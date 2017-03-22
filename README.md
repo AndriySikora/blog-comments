@@ -14,13 +14,13 @@ sudo apt-get update && sudo apt-get install yarn
 or visit website : https://yarnpkg.com/en/docs/install
 
 
-3. Install webpack
+2. Install webpack
 
 ```shell
 yarn add --dev webpack
 ```
 
-4. To install all the dependencies run:
+3. To install all the dependencies run:
 
 ```shell
 yarn
@@ -32,13 +32,13 @@ OR
 yarn install
 ```
 
-5. For single, headless tests use:
+4. For single, headless tests use:
 
 ```shell
 yarn run test:headless
 ```
 
-6. To run code in a browser user:
+5. To run code in a browser user:
 
 ```shell
 yarn start
