@@ -10335,6 +10335,7 @@ var CommentsSection = function (_Component) {
         _this.onChangeMessage = _this.onChangeMessage.bind(_this);
         _this.setCommentsToLocalStorage = _this.setCommentsToLocalStorage.bind(_this);
         _this.handleSubmit = _this.handleSubmit.bind(_this);
+        _this.handleErrorName = _this.handleErrorName.bind(_this);
         return _this;
     }
 
@@ -10420,9 +10421,19 @@ var CommentsSection = function (_Component) {
                 this.setState({
                     displayName: '',
                     message: '',
-                    commentItem: comments
+                    commentItem: comments,
+                    errorMessage: ''
                 });
+            } else {
+                return this.handleErrorName();
             }
+        }
+    }, {
+        key: 'handleErrorName',
+        value: function handleErrorName() {
+            this.setState({
+                errorMessage: 'Please enter another name'
+            });
         }
     }, {
         key: 'render',
@@ -10447,7 +10458,12 @@ var CommentsSection = function (_Component) {
                             'Your Name'
                         ),
                         _react2.default.createElement('input', { id: 'displayName', type: 'text', className: 'form-control', placeholder: 'Type your name...',
-                            onChange: this.onChangeName, value: this.state.displayName })
+                            onChange: this.onChangeName, value: this.state.displayName }),
+                        this.state.errorMessage && _react2.default.createElement(
+                            'span',
+                            { className: 'error' },
+                            this.state.errorMessage
+                        )
                     ),
                     _react2.default.createElement(
                         'div',

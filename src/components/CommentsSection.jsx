@@ -17,6 +17,7 @@ class CommentsSection extends Component {
         this.onChangeMessage = this.onChangeMessage.bind(this);
         this.setCommentsToLocalStorage = this.setCommentsToLocalStorage.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleErrorName = this.handleErrorName.bind(this);
     }
 
     componentWillMount() {
@@ -96,9 +97,18 @@ class CommentsSection extends Component {
             this.setState({
                 displayName: '',
                 message: '',
-                commentItem: comments
+                commentItem: comments,
+                errorMessage: ''
             });
+        } else {
+            return this.handleErrorName();
         }
+    }
+
+    handleErrorName() {
+        this.setState({
+            errorMessage: 'Please enter another name'
+        });
     }
 
     render() {
@@ -110,6 +120,7 @@ class CommentsSection extends Component {
                         <label htmlFor="displayName">Your Name</label>
                         <input id="displayName" type="text" className="form-control" placeholder="Type your name..."
                                onChange={this.onChangeName } value={this.state.displayName} />
+                        {this.state.errorMessage && <span className="error">{this.state.errorMessage}</span>}
                     </div>
                     <div className="form-group">
                         <label htmlFor="message">Comment</label>
