@@ -10344,27 +10344,25 @@ var CommentsSection = function (_Component) {
             var _this2 = this;
 
             this.firebaseRef = _firebaseConnection2.default;
-            var itemsFromLocalStorage = JSON.parse(localStorage.getItem('savedComments'));
+            var itemsFromLocalStorage = JSON.parse(localStorage.getItem('savedComments')) || [];
 
             var commentItem = [];
 
-            // itemsFromLocalStorage.forEach((itemsFromLocalStorage, index) => {
-            //     let itemStorage = itemsFromLocalStorage;
-            //     itemStorage['.key'] = index;
-            //     commentItem.push(itemStorage);
-            //     console.log('local', commentItem);
-            // });
+            itemsFromLocalStorage.map(function (itemsFromLocalStorage, index) {
+                var itemStorage = itemsFromLocalStorage;
+                itemStorage['.key'] = index;
+                commentItem.push(itemStorage);
+            });
 
             this.firebaseRef.on('value', function (commentsList) {
                 commentsList.forEach(function (commentsItem) {
                     var item = commentsItem.val();
                     item['.key'] = commentsItem.key;
                     commentItem.push(item);
+                });
 
-                    console.log('db', commentItem);
-                    _this2.setState({
-                        commentItem: commentItem
-                    });
+                _this2.setState({
+                    commentItem: commentItem
                 });
             });
         }
@@ -10386,7 +10384,7 @@ var CommentsSection = function (_Component) {
     }, {
         key: '_isFormDataValid',
         value: function _isFormDataValid() {
-            return this.state.displayName && this.state.displayName.trim().length !== 0 && this.state.message && this.state.message.trim().length !== 0;
+            return this.state.displayName && this.state.displayName !== 'admin' && this.state.displayName.trim().length !== 0 && this.state.message && this.state.message.trim().length !== 0;
         }
     }, {
         key: 'setCommentsToLocalStorage',
@@ -10409,12 +10407,20 @@ var CommentsSection = function (_Component) {
         value: function handleSubmit(e) {
             e.preventDefault();
             if (this._isFormDataValid()) {
-                debugger;
                 this.setCommentsToLocalStorage();
+
+                var comments = this.state.commentItem.slice();
+
+                comments.push({
+                    displayName: this.state.displayName,
+                    message: this.state.message,
+                    date: new Date().toISOString()
+                });
 
                 this.setState({
                     displayName: '',
-                    message: ''
+                    message: '',
+                    commentItem: comments
                 });
             }
         }
@@ -10434,7 +10440,7 @@ var CommentsSection = function (_Component) {
                     { className: 'comments-form', onSubmit: this.handleSubmit },
                     _react2.default.createElement(
                         'div',
-                        { className: 'form-group' },
+                        { className: 'form-group', value: 'valid' },
                         _react2.default.createElement(
                             'label',
                             { htmlFor: 'displayName' },
@@ -10660,9 +10666,9 @@ var NewListComments = function (_React$Component) {
         value: function render() {
             var sortedComments = this.getSortedItems();
 
-            var commentsItem = sortedComments.map(function (item) {
+            var commentsItem = sortedComments.map(function (item, index) {
                 return _react2.default.createElement(_CommentsItem2.default, {
-                    key: item['.key'],
+                    key: index,
                     id: item['.key'],
                     displayName: item.displayName,
                     message: item.message,

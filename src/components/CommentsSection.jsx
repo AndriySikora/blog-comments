@@ -21,11 +21,11 @@ class CommentsSection extends Component {
 
     componentWillMount() {
         this.firebaseRef = CommentsData;
-        let itemsFromLocalStorage = JSON.parse(localStorage.getItem('savedComments'));
+        let itemsFromLocalStorage = JSON.parse(localStorage.getItem('savedComments')) || [];
 
         const commentItem = [];
 
-        itemsFromLocalStorage.forEach((itemsFromLocalStorage, index) => {
+        itemsFromLocalStorage.map((itemsFromLocalStorage, index) => {
             let itemStorage = itemsFromLocalStorage;
             itemStorage['.key'] = index;
             commentItem.push(itemStorage);
@@ -36,14 +36,12 @@ class CommentsSection extends Component {
                 let item = commentsItem.val();
                 item['.key'] = commentsItem.key;
                 commentItem.push(item);
+            });
 
-                this.setState({
-                    commentItem: commentItem
-                });
+            this.setState({
+                commentItem: commentItem
             });
         });
-
-
     }
 
     componentWillUnMount() {
@@ -61,6 +59,7 @@ class CommentsSection extends Component {
 
     _isFormDataValid() {
         return this.state.displayName
+            && this.state.displayName !== 'admin'
             && this.state.displayName.trim().length !== 0
             && this.state.message
             && this.state.message.trim().length !== 0;
@@ -84,12 +83,20 @@ class CommentsSection extends Component {
     handleSubmit(e) {
         e.preventDefault();
         if (this._isFormDataValid()) {
-            debugger;
             this.setCommentsToLocalStorage();
+
+            let comments = this.state.commentItem.slice();
+
+            comments.push({
+                displayName : this.state.displayName,
+                message: this.state.message,
+                date: (new Date()).toISOString()
+            });
 
             this.setState({
                 displayName: '',
-                message: ''
+                message: '',
+                commentItem: comments
             });
         }
     }
@@ -99,10 +106,10 @@ class CommentsSection extends Component {
             <div className="container">
                 <h3>Add new comments to blog</h3>
                 <form className="comments-form" onSubmit={this.handleSubmit}>
-                    <div className="form-group">
+                    <div className="form-group" value="valid">
                         <label htmlFor="displayName">Your Name</label>
                         <input id="displayName" type="text" className="form-control" placeholder="Type your name..."
-                               onChange={this.onChangeName } value={ this.state.displayName} />
+                               onChange={this.onChangeName } value={this.state.displayName} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="message">Comment</label>

@@ -44,9 +44,9 @@ class NewListComments extends React.Component {
     render() {
         const sortedComments = this.getSortedItems();
 
-        const commentsItem = sortedComments.map((item) => {
+        const commentsItem = sortedComments.map((item, index) => {
                 return <CommentsItem
-                    key={item['.key']}
+                    key={index}
                     id={item['.key']}
                     displayName={item.displayName}
                     message={item.message}
