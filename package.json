@@ -34,6 +34,6 @@
     "babel-register": "^6.24.0",
     "concurrently": "^3.4.0",
     "reactfire": "^1.0.0",
-    "webpack": "^2.2.1"
+    "webpack": "^2.3.3"
   }
 }
